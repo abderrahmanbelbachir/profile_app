@@ -1,9 +1,13 @@
-FROM composer:1.9.0 as build
-WORKDIR /app
-COPY . /app
-RUN composer global require hirak/prestissimo && composer install
+FROM php:7.4-fpm-alpine as build
+RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 
-FROM php:7.4-apache-stretch
+RUN mkdir -p /app
+COPY . /app
+
+RUN cd /app && \
+    /usr/local/bin/composer install --no-dev
+
+FROM php:7.4-apache
 RUN docker-php-ext-install pdo pdo_mysql
 
 EXPOSE 8080

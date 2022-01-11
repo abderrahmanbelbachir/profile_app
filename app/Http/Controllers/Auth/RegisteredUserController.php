@@ -56,8 +56,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Log::info('user created and going to redirect !');
-
         return redirect(RouteServiceProvider::HOME);
     }
 }

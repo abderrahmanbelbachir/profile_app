@@ -3,7 +3,7 @@
 printf "composer install ... \n" ;
 composer install
 
-printf "Rename .env.example to .env for eskimi project ...\n"
+printf "Rename .env.example to .env for profile app project ...\n"
 cp .env.docker.example .env
 
 

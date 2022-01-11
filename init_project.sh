@@ -1,6 +1,6 @@
 #!/bin/sh
 
-printf "Rename .env.example to .env for eskimi project ...\n"
+printf "Rename .env.example to .env for profile app project ...\n"
 cp .env.docker.example .env
 
 printf "composer install ... \n" ;

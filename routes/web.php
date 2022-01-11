@@ -7,6 +7,10 @@ use \App\Http\Controllers\ProfileController;
 use \App\Http\Controllers\IndexController;
 use \App\Http\Controllers\DashboardController;
 
+if (env('APP_ENV') === 'production') {
+    \Illuminate\Support\Facades\URL::forceSchema('https');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

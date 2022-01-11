@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
@@ -34,12 +35,15 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('register user request received !');
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        Log::info('request validated !');
 
         $user = User::create([
             'first_name' => $request->first_name,
@@ -51,6 +55,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        Log::info('user created and going to redirect !');
 
         return redirect(RouteServiceProvider::HOME);
     }

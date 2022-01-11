@@ -40,9 +40,9 @@ class ProfileController extends Controller
         $user = User::findOrFail(Auth::user()->id);
         $user->update($userInputs);
 
-        (new ExperienceService($experiences))->handle($user);
+        // (new ExperienceService($experiences))->handle($user);
 
-        (new OrganizationService($organizations))->handle($user);
+        // (new OrganizationService($organizations))->handle($user);
 
         return redirect()->route('dashboard');
     }

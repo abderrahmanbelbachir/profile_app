@@ -18,9 +18,23 @@
 
                 <BreezeValidationErrors class="mb-4" />
 
+                <div class="profile-nav mt-4">
+                    <BreezeButton class="ml-4" @click="switchStep(1)"
+                                  :class="{ 'active': step === 1 }">
+                        Personal information
+                    </BreezeButton>
+                    <BreezeButton class="ml-4" @click="switchStep(2)"
+                                  :class="{ 'active': step === 2 }">
+                        Work experience
+                    </BreezeButton>
+                    <BreezeButton class="ml-4" @click="switchStep(3)"
+                                  :class="{ 'active': step === 3 }">
+                        Organization associations
+                    </BreezeButton>
+                </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-8">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        <form @submit.prevent="submit">
+                    <div class="p-6 bg-white border-b border-gray-200" v-if="step === 1">
+                        <form @submit.prevent="submitInfo">
                             <div>
                                 <BreezeLabel for="first_name" value="First Name" />
                                 <BreezeInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autofocus autocomplete="first_name" />
@@ -35,6 +49,20 @@
                                 <BreezeLabel for="email" value="Email" />
                                 <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
                             </div>
+
+
+                            <div class="flex items-center justify-end mt-4">
+
+                                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    Save
+                                </BreezeButton>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="p-6 bg-white border-b border-gray-200" v-if="step === 2">
+                        <form @submit.prevent="submitExperience">
+
 
                             <div class="mt-4">
                                 <h1>Work Experience</h1>
@@ -75,7 +103,7 @@
                                             </div>
                                             <div class="mt-4">
                                                 <BreezeCheckbox :checked="experience.current_job ? true : false"
-                                                        v-on:update:checked="experience.current_job = !experience.current_job"></BreezeCheckbox>
+                                                                v-on:update:checked="experience.current_job = !experience.current_job"></BreezeCheckbox>
                                                 <span class="inline-flex ml-2">Current job</span>
                                             </div>
                                         </div>
@@ -91,6 +119,19 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div class="flex items-center justify-end mt-4">
+
+                                <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    Save
+                                </BreezeButton>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="p-6 bg-white border-b border-gray-200" v-if="step === 3">
+                        <form @submit.prevent="submitOrganization">
 
 
                             <div class="mt-4">
@@ -132,7 +173,7 @@
                                             </div>
                                             <div class="mt-4">
                                                 <BreezeCheckbox :checked="organization.current_job ? true : false"
-                                                        v-on:update:checked="organization.current_job = !organization.current_job"></BreezeCheckbox>
+                                                                v-on:update:checked="organization.current_job = !organization.current_job"></BreezeCheckbox>
                                                 <span class="inline-flex ml-2">Current organization</span>
                                             </div>
                                         </div>
@@ -214,16 +255,33 @@ export default {
                         description: '',
                         current_job: false
                     }],
-            })
+            }),
+            step: 1
         }
     },
     mounted() {
         console.log('mounted here ' , this.$page);
     },
     methods: {
-        submit() {
-            console.log('going to submit update profile : ' , this.form);
+        submitInfo() {
+            console.log('going to submit update info : ' , this.form);
             this.form.post(this.route('profile.update'), {
+                onFinish: (result) => {
+                    this.refreshUser();
+                },
+            })
+        },
+        submitExperience() {
+            console.log('going to submit update experience : ' , this.form);
+            this.form.post(this.route('experience.update'), {
+                onFinish: (result) => {
+                    this.refreshUser();
+                },
+            })
+        },
+        submitOrganization() {
+            console.log('going to submit update organization : ' , this.form);
+            this.form.post(this.route('organization.update'), {
                 onFinish: (result) => {
                     this.refreshUser();
                 },
@@ -282,6 +340,9 @@ export default {
                 .catch((error) => {
                     console.log('error refreshing user ! ' , error);
                 });
+        },
+        switchStep(step) {
+            this.step = step;
         }
     }
 }

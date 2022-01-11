@@ -38,7 +38,7 @@ class ExperienceService
             'role' => $experience['role'],
             'company' => $experience['company'],
             'description' => $experience['description'],
-            'current_job' => $experience['current_job']
+            'current_job' => $experience['current_job'] ? $experience['current_job'] : false
         ];
     }
 

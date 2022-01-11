@@ -33,7 +33,7 @@ class OrganizationService
             'associated_as' => $organization['associated_as'],
             'organization' => $organization['organization'],
             'description' => $organization['description'],
-            'current_job' => $organization['current_job']
+            'current_job' => $organization['current_job'] ? $organization['current_job'] : false
         ];
     }
 

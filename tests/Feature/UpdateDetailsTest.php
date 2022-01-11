@@ -21,21 +21,10 @@ class UpdateDetailsTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $organizations = [
-            Organization::factory()->create(),
-            Organization::factory()->create()
-        ];
-        $experiences = [
-            Experience::factory()->create(),
-            Experience::factory()->create()
-        ];
-
         $request = [
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
-            'email' => $user->email,
-            'experiences' => $experiences,
-            'organizations' => $organizations
+            'email' => $user->email
         ];
 
         $response = $this->actingAs($user)
@@ -47,4 +36,5 @@ class UpdateDetailsTest extends TestCase
 
         // $response->assertStatus(200);
     }
+
 }
